@@ -1,6 +1,6 @@
-from classes.User import User
-from classes.Task import Task
 from classes.Comment import Comment
+from classes.Task import Task
+from classes.User import User
 
 
 class EndpointFactory:
@@ -14,11 +14,10 @@ class EndpointFactory:
         self._check_params(params)
         self._extract_params(params)
 
-
     def _check_params(self, params: dict):
         if not params:
             params = {}
-
+            
         self._endpoint_name = params.get('endpointName')
         self._method_name = params.get('method')
 
@@ -26,24 +25,25 @@ class EndpointFactory:
             raise RuntimeError('Не передано название конечной точки')
 
         if self._endpoint_name not in self._ENDPOINT_MAP:
-            raise RuntimeError(f'Конечная точка {self._endpoint_name} не поддерживается')
+            raise RuntimeError(f'Конечная точка {self._endpoint_name} '
+                               f'не поддерживается')
 
         if not self._method_name:
             raise RuntimeError('Не передано название метода')
 
-        if self._method_name not in self._ENDPOINT_MAP[self._endpoint_name].methods_map:
-            raise RuntimeError(f'Метод {self._method_name} не поддерживается сущностью {self._endpoint_name}')
+        self._class = self._ENDPOINT_MAP[self._endpoint_name]()
 
+        if self._method_name not in self._class.methods_map:
+            raise RuntimeError(f'Метод {self._method_name} не '
+                               f'поддерживается сущностью {self._endpoint_name}')
+        
     def _extract_params(self, params: dict):
-        endpoint = self._ENDPOINT_MAP[self._endpoint_name]
-        self._method = endpoint.methods_map[self._method_name]
-
+        self._method = self._class.methods_map[self._method_name]
+        
         data = params.get('data') or {}
-
+        
         self._filter = data.get('filter')
         self._data_params = data.get('params')
 
     def process(self):
         return self._method(data=self._data_params, filter=self._filter)
-
-

@@ -16,8 +16,8 @@ class User(BaseModel):
     login = Column(Text, nullable=False, unique=True)
     password = Column(Text, nullable=False)
 
-    def from_object(self, record: dict):
+    def _manual_fillable_field(self, record: dict):
         if record.get('password') and not record.get('id'):
-            self.password = Password.get_hash(record.get('password'))
+            self.password = Password().get_hash(record.get('password'))
 
 

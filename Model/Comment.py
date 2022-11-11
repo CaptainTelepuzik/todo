@@ -11,4 +11,4 @@ class Comment(BaseModel):
     task_id = Column(Integer, ForeignKey('tasks.id'), nullable=False)
     text = Column(Text, nullable=False)
 
-    user = relationship('User', lazy='join', foreign_keys=[user_id])
+    user = relationship('User', foreign_keys=[user_id])

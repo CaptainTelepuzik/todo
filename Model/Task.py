@@ -10,4 +10,4 @@ class Task(BaseModel):
     description = Column(Text, nullable=False)
     date_complited = Column(DateTime)
 
-    user = relationship('User', lazy='join', foreign_keys=[user_id])
+    user = relationship('User', foreign_keys=[user_id])

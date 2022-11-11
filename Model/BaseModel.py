@@ -31,13 +31,13 @@ class BaseModel(Model):
         fields = self._get_fillable_fields()
 
         for field in fields:
-            if field in record:
-                setattr(self, record.get(field))
+            if field.key in record:
+                setattr(self, field.key, record.get(field.key))
 
-        if not self.create_at:
-            self.create_at = datetime.datetime.now()
+        if not self.created_at:
+            self.created_at = datetime.datetime.now()
         else:
-            self.update_at = datetime.datetime.now()
+            self.updated_at = datetime.datetime.now()
 
         self._manual_fillable_field(record)
 
@@ -50,12 +50,12 @@ class BaseModel(Model):
             :return: Словарь данными из модели
             """
 
-            result = []
+            result = {}
 
             columns = self._get_columns()
 
             for column_name in columns:
-                result[column_name] = getattr(self, column_name)
+                result[column_name.key] = getattr(self, column_name.key)
 
             self._manual_responce_field(result)
 

@@ -15,7 +15,7 @@ class Password:
         :param password: пароль
         :return: Захешированный пароль с солью
         """
-        return hashlib.sha256(self._salt.encode() + password.encode()).hexdigets() + ':' + self._salt
+        return hashlib.sha256(self._salt.encode() + password.encode()).hexdigest() + ':' + self._salt
 
     @staticmethod
     def check_hash(hashed_password: str, user_password: str) -> bool:
@@ -26,5 +26,5 @@ class Password:
         :return: Результат сравнения
         """
         password, salt = hashed_password.split(':')
-        return password == hashlib.sha256(salt.encode() + user_password.encode()).hexdigets()
+        return password == hashlib.sha256(salt.encode() + user_password.encode()).hexdigest()
 

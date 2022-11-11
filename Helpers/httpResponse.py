@@ -6,7 +6,7 @@ class HttpResponse:
     @staticmethod
     def make(*, data: Optional[Union[int, float, str, bool, dict, list]] = None,
              error_text: Optional[str] = None,
-             success: Optional[bool] = None,
+             success: Optional[bool] = True,
              meta: Optional[dict] = None):
         """
 

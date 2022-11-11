@@ -22,7 +22,7 @@ class BaseModel(Model):
     updated_at = Column(DateTime, nullable=True)
     deleted_at = Column(DateTime, nullable=True)
 
-    def from_object(self, record: dict):
+    def from_object(self, record: dict, create_method: bool = False):
         """
         Cоздание модели из словаря
         :param record: Запись словаря с данными
@@ -39,7 +39,8 @@ class BaseModel(Model):
         else:
             self.updated_at = datetime.datetime.now()
 
-        self._manual_fillable_field(record)
+        if not create_method:
+            self._manual_fillable_field(record)
 
         return self
 

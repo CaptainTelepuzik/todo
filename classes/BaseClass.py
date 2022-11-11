@@ -90,7 +90,7 @@ class BaseClass:
         if not record:
             data = model.to_dict()
         else:
-            data = model.from_object(record).to_dict()
+            data = model.from_object(record, True).to_dict()
 
         return HttpResponse.make(data=data)
 
